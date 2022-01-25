@@ -37,6 +37,14 @@ exports.deleteListe = async function (req, res, next) {
   });
 };
 
+exports.updateListe = async function (req, res, next) {
+  if (!req.params.id || !req.body.nom)
+    return res.status(403).send("Missing parameters");
+  return res.json(
+    await Liste.updateListe({ id: req.params.id, nom: req.body.nom })
+  );
+};
+
 exports.createListe = async function (req, res, next) {
   if (!req.body.id_utilisateur || !req.body.nom)
     return res.status(403).send("Missing parameters");

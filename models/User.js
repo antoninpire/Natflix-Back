@@ -15,7 +15,7 @@ User.verifPassword = function (pass, sPass) {
   return bcrypt.compareSync(pass, sPass);
 };
 
-User.exists = function (username) {
+User.exists = function (username, callback) {
   db.query(
     "SELECT * FROM utilisateurs WHERE identifiant=?",
     [username],

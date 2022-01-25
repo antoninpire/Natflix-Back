@@ -16,6 +16,13 @@ Liste.deleteListe = function (id) {
   return asyncQuery("DELETE FROM listes WHERE id=?", [id]);
 };
 
+Liste.updateListe = function (liste) {
+  return asyncQuery(`UPDATE listes SET nom=? WHERE id=?`, [
+    liste.nom,
+    liste.id,
+  ]);
+};
+
 Liste.getListesUtilisateur = function (id_utilisateur) {
   return asyncQuery(
     `SELECT

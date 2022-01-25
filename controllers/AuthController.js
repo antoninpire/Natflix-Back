@@ -5,16 +5,13 @@ exports.signUp = async function (req, res, next) {
   const data = req.body;
   if (!data.username || !data.password)
     return res.status(403).send("Missing parameters");
-  User.exists(data.username, function (err, status, result) {
+  User.exists(data.username, async function (err, status, result) {
     if (err) return res.status(500).send(err);
     switch (status) {
       case 1:
         return res.status(403).send("Le nom d'utilisateur est déjà pris!");
     }
-    User.createUser(data, function (err, user) {
-      if (err) return res.status(500).send(err);
-      return res.json(user);
-    });
+    return res.json(await User.createUser(data));
   });
 };
 

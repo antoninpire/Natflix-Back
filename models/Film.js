@@ -71,19 +71,19 @@ Film.getFilms = function () {
 };
 
 Film.getFilmsPopulaires = function () {
-  return asyncQuery(`SELECT 
-  f.id, f.titre, f.description, f.duree, f.date_diffusion, f.url_affiche, f.url_image, f.date_creation, 
-  GROUP_CONCAT(DISTINCT g.nom) AS nom_genres, 
-  GROUP_CONCAT(DISTINCT p.nom) AS nom_producteurs,
-   COUNT(v.id) AS nb_vues 
-   FROM films f 
-   LEFT JOIN genres g ON f.id=g.id_film 
-   LEFT JOIN producteurs p ON f.id=p.id_film 
-   LEFT JOIN vues v ON f.id=v.id_film 
-   GROUP BY f.id 
-   ORDER BY nb_vues DESC 
-   LIMIT 30;
-  `);
+  return asyncQuery(
+    `
+    SELECT 
+    f.id, f.titre, f.description, f.duree, f.date_diffusion, f.url_affiche, f.url_image, f.date_creation, 
+    vues.nb_vues 
+    FROM films f 
+    LEFT JOIN 
+    (SELECT id_film, COUNT(*) AS nb_vues FROM vues GROUP BY id_film ORDER BY nb_vues DESC LIMIT 30) vues 
+    ON f.id=vues.id_film 
+    WHERE vues.nb_vues IS NOT NULL 
+    GROUP BY f.id;
+    `
+  );
 };
 
 Film.getFilmsVus = function (id_user) {
@@ -124,12 +124,12 @@ Film.getFilmsSimilaires = function (movie, nGenres, nProducteurs) {
 Film.getSearchAutoCompleteData = function () {
   return asyncQuery(
     `
-    SELECT titre AS val, id, "Film" AS type 
-    FROM films 
+    SELECT CONCAT(titre, " (",YEAR(date_diffusion), ")") AS val, id, "Film" AS type 
+    FROM films
     UNION 
-    SELECT DISTINCT(nom), id, "Genre" AS type 
+    SELECT DISTINCT(nom) AS val, id, "Genre" AS type 
     FROM genres 
-    GROUP BY nom  
+    GROUP BY nom;
     `
   );
 };

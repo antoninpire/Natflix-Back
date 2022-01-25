@@ -31,10 +31,10 @@ exports.populate = async function (req, res, next) {
     let min = note - 1.0;
     const arr = [];
     for (let i = 0; i < 5; i++) {
-      arr.push(min);
+      if (min <= 5) arr.push(min);
       min += 0.5;
     }
-    const randomIndex = randomFromRange(0, 5);
+    const randomIndex = randomFromRange(0, arr.length);
     return arr[randomIndex];
   };
 
@@ -117,9 +117,8 @@ exports.populate = async function (req, res, next) {
               for (let i = 0; i < numberOfNotes; i++) {
                 // On récupère un utilisateur au hasard dans la liste
                 const randomUserIndex = randomFromRange(0, userIdsCopy.length);
-                m.note_average /= 2;
                 const roundedNote = (
-                  Math.round(m.vote_average * 2) / 2
+                  Math.round((m.vote_average / 2) * 2) / 2
                 ).toFixed(1);
                 // On génère une note aléatoire proche de celle récupérée par l'API
                 const randomApproximativeNote =
@@ -143,10 +142,3 @@ exports.populate = async function (req, res, next) {
 
   return res.send("Les données ont bien été créées");
 };
-
-// Récupérer les films selon la page i
-// Parcours des films
-// Récupérer les genres et producteurs / get-movie-details
-// Insérer les données du film
-// Créer plusieurs notes aléatoires proches de celle récupérée
-// Ajouter des vues

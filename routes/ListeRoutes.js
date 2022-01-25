@@ -12,5 +12,6 @@ router.get(
 router.delete("/:id", auth, ListeController.deleteListe);
 router.post("/add", ListeController.createListe);
 router.post("/update", ListeController.update);
+router.put("/:id", ListeController.updateListe);
 
 module.exports = router;
