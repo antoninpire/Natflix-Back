@@ -4,4 +4,6 @@ const router = express.Router();
 const DataController = require("../controllers/DataController");
 
 router.post("/populate", DataController.populate);
+router.delete("/duplicates", DataController.removeMovieDuplicates);
+
 module.exports = router;

@@ -35,4 +35,21 @@ Note.getNoteFilmUtilisateur = async function (id_film, id_utilisateur) {
   );
 };
 
+Note.getNotesUtilisateur = async function (id_utilisateur) {
+  return asyncQuery("SELECT * FROM notes WHERE id_utilisateur=?", [
+    id_utilisateur,
+  ]);
+};
+
+Note.getNFavoriteMoviesFromUser = async function (id_utilisateur, n) {
+  return asyncQuery(
+    "SELECT id_film FROM `notes` where id_utilisateur=? ORDER BY note DESC, date_creation DESC LIMIT ?;",
+    [id_utilisateur, n]
+  );
+};
+
+Note.deleteNotesFilm = async function (id_film) {
+  return asyncQuery("DELETE FROM notes WHERE id_film=?", [id_film]);
+};
+
 module.exports.Note = Note;

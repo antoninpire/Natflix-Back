@@ -43,4 +43,8 @@ Vue.toggleVue = async function (id_film, id_utilisateur) {
   return await this.deleteVueFilmUtilisateur(id_film, id_utilisateur);
 };
 
+Vue.deleteVuesFilm = async function (id_film) {
+  return asyncQuery("DELETE FROM vues WHERE id_film=?", [id_film]);
+};
+
 module.exports.Vue = Vue;

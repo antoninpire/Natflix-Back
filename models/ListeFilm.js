@@ -41,4 +41,8 @@ ListeFilm.deleteMovieFromUserLists = function (id_film, id_utilisateur) {
   );
 };
 
+ListeFilm.deleteMovie = function (id_film) {
+  return asyncQuery("DELETE FROM liste_film WHERE id_film=?", [id_film]);
+};
+
 module.exports.ListeFilm = ListeFilm;

@@ -29,10 +29,27 @@ User.exists = function (username, callback) {
 };
 
 User.createUser = function (user) {
+  if (user.id)
+    return asyncQuery(
+      "INSERT INTO utilisateurs (id, identifiant, password) VALUES (?, ?, ?)",
+      [user.id, user.username, User.hashPassword(user.password)]
+    );
   return asyncQuery(
     "INSERT INTO utilisateurs (identifiant, password) VALUES (?, ?)",
     [user.username, User.hashPassword(user.password)]
   );
+};
+
+User.updateUser = function (user) {
+  if (user.username)
+    return asyncQuery("UPDATE utilisateurs SET identifiant=? WHERE id=?", [
+      user.username,
+      user.id,
+    ]);
+  return asyncQuery("UPDATE utilisateurs SET password=? WHERE id=?", [
+    User.hashPassword(user.password),
+    user.id,
+  ]);
 };
 
 User.getUserById = function (id) {

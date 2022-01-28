@@ -20,4 +20,8 @@ Genre.getDistinctGenres = async function () {
   return asyncQuery("SELECT DISTINCT(nom) FROM genres");
 };
 
+Genre.deleteGenresFilm = async function (id_film) {
+  return asyncQuery("DELETE FROM genres WHERE id_film=?", [id_film]);
+};
+
 module.exports.Genre = Genre;

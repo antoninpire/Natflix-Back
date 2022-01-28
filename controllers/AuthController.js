@@ -15,6 +15,21 @@ exports.signUp = async function (req, res, next) {
   });
 };
 
+exports.update = async function (req, res, next) {
+  if (!req.body.id || (!req.body.username && !req.body.password))
+    return res.status(403).send("Missing parameters");
+  if (req.body.username) {
+    User.exists(req.body.username, async function (err, status, result) {
+      if (err) return res.status(500).send(err);
+      switch (status) {
+        case 1:
+          return res.status(403).send("Le nom d'utilisateur est déjà pris!");
+      }
+    });
+  }
+  return res.json(await User.updateUser(req.body));
+};
+
 exports.login = async function (req, res, next) {
   const data = req.body;
   if (!data.username || !data.password)

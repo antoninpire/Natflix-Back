@@ -23,4 +23,8 @@ Producteur.getDistinctProducteurs = async function () {
   );
 };
 
+Producteur.deleteProducteursFilm = async function (id_film) {
+  return asyncQuery("DELETE FROM producteurs WHERE id_film=?", [id_film]);
+};
+
 module.exports.Producteur = Producteur;
