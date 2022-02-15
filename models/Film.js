@@ -166,7 +166,7 @@ Film.getFilmsSimilaires = async function (movie /*, nGenres, nProducteurs */) {
     });
     python.on("close", (code) => {
       if (code != 0 && code != 1) reject("Il y a une erreur");
-      console.log(dataToSend);
+      // console.log(dataToSend);
       if (dataToSend) resolve(JSON.parse(dataToSend));
     });
   });
@@ -180,7 +180,8 @@ Film.getSearchAutoCompleteData = function () {
     UNION 
     SELECT DISTINCT(nom) AS val, id, "Genre" AS type 
     FROM genres 
-    GROUP BY nom;
+    GROUP BY nom
+    LIMIT 300;
     `
   );
 };
